@@ -13,5 +13,7 @@ int main() {
 
     SimulatedAnnealing(a, b);
 
+    SimulatedAnnealingMulti(a, b);
+
     return 0;
 }
