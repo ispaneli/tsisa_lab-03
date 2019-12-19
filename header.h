@@ -7,7 +7,6 @@
 #include <cmath>
 #include <iomanip>
 
-const double e = 2.71828;
 const double T_max = 10000;
 const double T_min = 0.01;
 
@@ -50,12 +49,16 @@ void SimulatedAnnealing(double begin, double end) {
 
         if (delta_F <= 0) {
             X1 = X2;
+            P = 1;
+            flag = true;
         } else {
             // Вероятность выполнения итерация.
-            P = std::pow(e,(- delta_F / Ti));
+            P = std::exp(- delta_F / Ti);
             if (RAND(0, 1) <= P) {
                 X1 = X2;
                 flag = true;
+            } else {
+                flag = false;
             }
         }
 
@@ -66,10 +69,17 @@ void SimulatedAnnealing(double begin, double end) {
         else
             std::cout << Ti;
         std::cout << std::setw(8) << X1
-                  << std::setw(8) << Function((X1))
-                  << std::setprecision(5)
-                  << std::setw(10) << P
-                  << std::setprecision(3);
+                  << std::setw(8) << Function((X1));
+        if (P == 1) {
+            std::cout << "      1   ";
+        } else if (P < 0.000005) {
+            std::cout << "     ~0   ";
+        } else {
+            std::cout << std::setprecision(5)
+                      << std::setw(10) << P
+                      << std::setprecision(3);
+        }
+
         if (flag)
             std::cout << "   +" << std::endl;
         else
@@ -103,12 +113,16 @@ void SimulatedAnnealingMulti(double begin, double end) {
 
         if (delta_F <= 0) {
             X1 = X2;
+            P = 1;
+            flag = true;
         } else {
             // Вероятность выполнения итерация.
-            P = std::pow(e,(- delta_F / Ti));
+            P = std::exp(- delta_F / Ti);
             if (RAND(0, 1) <= P) {
                 X1 = X2;
                 flag = true;
+            } else {
+                flag = false;
             }
         }
 
@@ -119,10 +133,17 @@ void SimulatedAnnealingMulti(double begin, double end) {
         else
             std::cout << Ti;
         std::cout << std::setw(8) << X1
-                  << std::setw(8) << multiFunction((X1))
-                  << std::setprecision(5)
-                  << std::setw(10) << P
-                  << std::setprecision(3);
+                  << std::setw(8) << multiFunction((X1));
+
+        if (P == 1) {
+            std::cout << "      1   ";
+        } else if (P < 0.000005) {
+            std::cout << "     ~0   ";
+        } else {
+            std::cout << std::setprecision(5)
+                      << std::setw(10) << P
+                      << std::setprecision(3);
+        }
         if (flag)
             std::cout << "   +" << std::endl;
         else
